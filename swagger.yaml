@@ -1,13 +1,53 @@
 tags:
-- name: users
-  description: users API
+  - name: admin
+    description: Admin API
+  - name: weather
+    description: Weather API
 
 paths:
-# [GET] users
-  /users:
+  /api/v1/weather:
     get:
       tags:
-      - users
+        - weather
+      summary: Get weather by address
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/street'
+        - $ref: '#/components/parameters/streetNumber'
+        - $ref: '#/components/parameters/town'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/postalCode'
+      responses:
+        200:
+          description: 'OK'
+        404:
+          description: 'Not valid'
+        500:
+          description: 'Server Error'
+  /api/v1/weather/address/validate:
+    get:
+      tags:
+        - weather
+      summary: Validates address
+      parameters:
+        - $ref: '#/components/parameters/street'
+        - $ref: '#/components/parameters/streetNumber'
+        - $ref: '#/components/parameters/town'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/postalCode'
+      responses:
+        200:
+          description: 'OK'
+        404:
+          description: 'Not valid'
+        500:
+          description: 'Server Error'
+
+  /admin/users:
+    get:
+      tags:
+        - admin
       summary: Find All Users
       responses:
         200:
@@ -15,98 +55,95 @@ paths:
         500:
           description: 'Server Error'
 
-# [POST] users
     post:
       tags:
-      - users
+        - admin
       summary: Add User
       parameters:
-      - name: body
-        in: body
-        description: user Data
-        required: true
-        schema:
-          $ref: '#/definitions/users'
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/users'
       responses:
         201:
           description: 'Created'
         400:
           description: 'Bad Request'
-        409:
+        404:
           description: 'Conflict'
         500:
           description: 'Server Error'
 
-# [GET] users/id
-  /users/{id}:
+  /admin/users/{id}:
     get:
       tags:
-      - users
+        - admin
       summary: Find User By Id
       parameters:
-      - name: id
-        in: path
-        description: User Id
-        required: true
+        - name: id
+          in: path
+          description: User Id
+          required: true
       responses:
         200:
           description: 'OK'
-        409:
-          description: 'Conflict'
+        404:
+          description: 'Not Found'
         500:
           description: 'Server Error'
 
-# [PUT] users/id
     put:
       tags:
-      - users
+        - admin
       summary: Update User By Id
       parameters:
-      - name: id
-        in: path
-        description: user Id
-        required: true
-      - name: body
-        in: body
-        description: user Data
-        required: true
-        schema:
-          $ref: '#/definitions/users'
+        - name: id
+          in: path
+          description: user Id
+          required: true
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/users'
       responses:
         200:
           description: 'OK'
         400:
           description: 'Bad Request'
+        404:
+          description: 'Not Found'
         409:
           description: 'Conflict'
         500:
           description: 'Server Error'
 
-# [DELETE] users/id
     delete:
       tags:
-      - users
+        - admin
       summary: Delete User By Id
       parameters:
-      - name: id
-        in: path
-        description: user Id
-        required: true
+        - name: id
+          in: path
+          description: user Id
+          required: true
       responses:
         200:
           description: 'OK'
-        409:
-          description: 'Conflict'
+        404:
+          description: 'Not Found'
         500:
           description: 'Server Error'
 
-# definitions
 definitions:
   users:
     type: object
     required:
-        - email
-        - password
+      - email
+      - password
     properties:
       id:
         description: user Id
@@ -116,6 +153,44 @@ definitions:
       password:
         type: string
         description: user Password
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    street:    
+      in: query
+      name: street
+      required: true
+      schema:
+        type: string 
+    streetNumber:
+      in: query
+      name: streetNumber
+      required: true
+      schema:
+        type: string   
+    town:
+      in: query
+      name: town
+      required: true
+      schema:
+        type: string  
+    country:
+      in: query
+      name: country
+      required: true
+      schema:
+        type: string  
+    postalCode:
+      in: query
+      name: postalCode
+      required: true
+      schema:
+        type: string
 
 schemes:
  - https

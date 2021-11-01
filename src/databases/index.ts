@@ -1,13 +1,10 @@
-import config from 'config';
-import { dbConfig } from '@interfaces/db.interface';
-
-const { host, port, database }: dbConfig = config.get('dbConfig');
+const host = process.env.MONGO_HOST || '';
+const port = process.env.MONGO_PORT || '';
+const database = process.env.MONGO_DATABASE || '';
 
 export const dbConnection = {
   url: `mongodb://${host}:${port}/${database}`,
   options: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
+    maxPoolSize: 10,
   },
 };

@@ -9,7 +9,7 @@ afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
 });
 
-describe('Testing Users', () => {
+describe.skip('Testing Users', () => {
   describe('[GET] /users', () => {
     it('response fineAll Users', async () => {
       const usersRoute = new UsersRoute();

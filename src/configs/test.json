@@ -1,11 +1,16 @@
 {
     "env": "test",
-    "dbConfig": {
-        "host": "localhost",
-        "database": "mongoose",
-        "port": 27017
+    "external": {
+        "mapServiceUrl": "https://nominatim.openstreetmap.org",
+        "weatherServiceUrl": "https://api.openweathermap.org/"
     },
-    "secretKey": "secretKey",
+    "cache": {
+        "ttl": 60
+    },
+    "jwt": {
+        "secretKey": "secretKey",
+        "expiresIn": 30
+    },
     "log": {
         "format": "dev",
         "dir": "../logs"

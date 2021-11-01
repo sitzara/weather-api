@@ -1,3 +1,5 @@
+process.env['NODE_CONFIG_DIR'] = __dirname + '/configs';
+require('dotenv/config');
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
 const { compilerOptions } = require('./tsconfig.json');
 
